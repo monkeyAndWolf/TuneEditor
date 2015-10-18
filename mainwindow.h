@@ -1,0 +1,72 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+
+namespace Ui {
+class MainWindow;
+}
+
+class QSettings;
+class QTimer;
+class TunePusher;
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+
+    static QString AUTOSAVE;
+    static QString TITLE;
+    static QString TRANSCRIBER;
+    static QString URL;
+    static QString TYPE;
+    static QString METER;
+    static QString NOTE_LENGTH;
+    static QString KEY;
+    static QString ABC;
+    static QString DIRECTORY;
+    static QString FILENAME;
+
+
+public slots:
+    void trySave();
+    void openDirectorySelector();
+    void populateFields();
+    void clearFields();
+
+    void changeAutosave(int state);
+    void changeTitle();
+    void changeTranscriber();
+    void changeUrl();
+    void changeType();
+    void changeMeter();
+    void changeNoteLength();
+    void changeKey();
+    void changeAbc();
+    void changeFilename();
+    void changeDirectory();
+
+    void flickTimer();
+    void updateUI();
+
+    void addJSObject();
+
+private:
+    Ui::MainWindow *ui;
+    QSettings *settings;
+
+    QString toString();
+    bool save();
+
+    bool ownFilename;
+    bool autosaveOn;
+    QTimer *autosaveTimer;
+
+    TunePusher *pusher;
+};
+
+#endif // MAINWINDOW_H
