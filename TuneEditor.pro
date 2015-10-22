@@ -22,4 +22,8 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 RESOURCES += \
-    javasc.qrc
+    javasc.qrc \
+    images.qrc
+
+DISTFILES += \
+    kantele.png
