@@ -288,6 +288,9 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>radioSheetMusic</tabstop>
+  <tabstop>radioPrimer</tabstop>
+  <tabstop>radioOverview</tabstop>
   <tabstop>editDirectory</tabstop>
   <tabstop>buttonDir</tabstop>
   <tabstop>editFilename</tabstop>
@@ -295,10 +298,13 @@
   <tabstop>buttonNew</tabstop>
   <tabstop>editTitle</tabstop>
   <tabstop>editTranscriber</tabstop>
+  <tabstop>editUrl</tabstop>
   <tabstop>editType</tabstop>
   <tabstop>editMeter</tabstop>
   <tabstop>editNoteLength</tabstop>
   <tabstop>editKey</tabstop>
+  <tabstop>webView</tabstop>
+  <tabstop>editABC</tabstop>
  </tabstops>
  <resources/>
  <connections/>
