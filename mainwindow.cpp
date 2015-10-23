@@ -21,7 +21,6 @@
 #include <QWebSettings>
 #endif
 
-QString MainWindow::AUTOSAVE = "autosave";
 QString MainWindow::TITLE = "title";
 QString MainWindow::TRANSCRIBER = "transcriber";
 QString MainWindow::URL = "url";
@@ -38,8 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
   , ownFilename(false)
-  , autosaveOn(false)
-  , autosaveTimer(0)
+  , updateTimer(0)
 {
     pusher = new TunePusher(this);
     ui->setupUi(this);
@@ -50,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QUrl url("qrc:///index.html");
     ui->webView->setUrl(url);
-    ui->webView->setZoomFactor(0.68);
 
 #ifdef DEBUG_WEBKIT
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
@@ -73,14 +70,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->editTranscriber, &QLineEdit::textChanged, this, &MainWindow::changeTranscriber);
     connect(ui->editType, &QLineEdit::textChanged, this, &MainWindow::changeType);
     connect(ui->editUrl, &QLineEdit::textChanged, this, &MainWindow::changeUrl);
-    connect(ui->checkAutosave, &QCheckBox::stateChanged, this, &MainWindow::changeAutosave);
+
+    connect(ui->radioOverview, &QRadioButton::clicked, this, &MainWindow::setOverview);
+    connect(ui->radioPrimer, &QRadioButton::clicked, this, &MainWindow::setPrimer);
+    connect(ui->radioSheetMusic, &QRadioButton::clicked, this, &MainWindow::setSheetMusic);
 
 
-    autosaveTimer = new QTimer(this);
-    autosaveTimer->setInterval(50);
-    autosaveTimer->setSingleShot(true);
+    updateTimer = new QTimer(this);
+    updateTimer->setInterval(50);
+    updateTimer->setSingleShot(true);
 
-    connect(autosaveTimer, &QTimer::timeout, this, &MainWindow::updateUI);
+    connect(updateTimer, &QTimer::timeout, this, &MainWindow::updateUI);
 
     populateFields();
 }
@@ -88,6 +88,21 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::addJSObject()
 {
     ui->webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("TunePusher"), pusher);
+}
+
+void MainWindow::setSheetMusic()
+{
+    ui->webView->setUrl(QUrl("qrc:///index.html"));
+}
+
+void MainWindow::setPrimer()
+{
+    ui->webView->setUrl(QUrl("qrc:///primer.html"));
+}
+
+void MainWindow::setOverview()
+{
+    ui->webView->setUrl(QUrl("qrc:///intro.html"));
 }
 
 MainWindow::~MainWindow()
@@ -99,19 +114,15 @@ void MainWindow::updateUI()
 {
     QString abcString = this->toString();
     pusher->updateABC(abcString);
-    if (autosaveOn)
-    {
-        trySave();
-    }
 }
 
 void MainWindow::flickTimer()
 {
-    if (autosaveTimer->isActive())
+    if (updateTimer->isActive())
     {
-        autosaveTimer->stop();
+        updateTimer->stop();
     }
-    autosaveTimer->start();
+    updateTimer->start();
 }
 
 void MainWindow::populateFields()
@@ -126,11 +137,6 @@ void MainWindow::populateFields()
     ui->editTranscriber->setText(settings->value(MainWindow::TRANSCRIBER).toString());
     ui->editType->setText(settings->value(MainWindow::TYPE).toString());
     ui->editUrl->setText(settings->value(MainWindow::URL).toString());
-
-    autosaveOn = settings->value(MainWindow::AUTOSAVE).toBool();
-    changeAutosave(autosaveOn);
-    ui->checkAutosave->setChecked(autosaveOn);
-
 }
 
 void MainWindow::clearFields()
@@ -238,12 +244,6 @@ void MainWindow::openDirectorySelector()
     ui->editDirectory->setText(directory);
 }
 
-void MainWindow::changeAutosave(int state)
-{
-    if (state)
-        trySave();
-    settings->setValue(MainWindow::AUTOSAVE, state);
-}
 
 void MainWindow::changeTitle()
 {

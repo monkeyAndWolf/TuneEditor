@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>index.html</file>
         <file>abcjs_basic_2.0-min.js</file>
+        <file>BalanceTheStraw.png</file>
+        <file>primer.html</file>
+        <file>intro.html</file>
     </qresource>
 </RCC>

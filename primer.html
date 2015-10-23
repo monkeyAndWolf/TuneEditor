@@ -1,0 +1,451 @@
+
+<!-- saved from url=(0050)http://trillian.mit.edu/~jc/doc/doc/ABCprimer.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>An ABC primer</title>
+</head><body><center><strong>An ABC primer</strong></center>
+<center>by <a href="mailto:jc@trillian.mit.edu">John Chambers</a></center>
+<hr>
+This is a brief intro to the 
+	<a href="http://abcnotation.org.uk/">ABC music notation</a> system.
+This notation was originally invented by
+	<a href="http://staffweb.cms.gre.ac.uk/~c.walshaw/">Chris Walshaw</a>,
+who produced the first
+	<a href="http://staffweb.cms.gre.ac.uk/~c.walshaw/abc2mtex/">abc2mtex</a>
+program that converts ABC notation to mtex (Musix Tex).
+Other people have since produced a variety of 
+	<a href="http://staffweb.cms.gre.ac.uk/~c.walshaw/abc/#software">other software for ABC</a>,
+most of which is free.
+<p>
+The main advantages of ABC are:
+<bl>
+</bl></p><li>It's simple ASCII, easy to type and read, and easy to email.
+</li><li>There's a lot of good software that understands it.
+</li><li>ABC files are small, so downloading is fast.
+
+<p>
+The main disadvantages of ABC are:
+<bl>
+</bl></p></li><li>It's not a full music notation yet. It's best for single-line instruments.
+</li><li>The software isn't from a single source, and there are inconsistencies.
+
+<p>
+OK, enough of that. On to the notation...
+</p><hr>
+<center><b>Headers</b></center>
+<p>
+Each tune starts with some header lines.
+A header lines starts with a letter and a colon (:), plus some info.
+There are lots of different header lines. The most useful are:
+</p><pre><b>
+   X: 1
+   T: Tune Title
+   C: Composer
+   N: Notes about the tune
+   M: 3/4
+   L: 1/8
+   K: G
+</b></pre>
+<!--
+<b><iframe src="abc/hdr1.abc"></iframe></b>
+-->
+<p>The <b>X:</b> line gives a sequence number, useful for selecting one
+	tune out of a file full of tunes.
+</p><p>The <b>T:</b> line gives the title, and may be repeated if you want to give several titles.
+</p><p>The <b>C:</b> line gives the composer's name.  Use <b>C:Trad</b> for traditional tunes.
+</p><p>The <b>N:</b> line is any kind of comment, ignored by the software.
+</p><p>The <b>M:</b> line is the meter. 
+	<b>M:2/4</b> is two/four time; <b>M:6/8</b> is jig time, etc.
+	<b>M:C</b> and <b>M:C|</b> have the obvious meanings.
+</p><p>The <b>L:</b> line is the default note length; here it's an eighth note (quaver).
+</p><p>The <b>K:</b> gives the key. <b>K:Em</b> would mean E minor. Most ABC software
+	also recognizes the classical "modal" keys, using 3 (or more) letters
+	of the mode, so <b>K:EDor</b> means E Dorian (two sharps) and <b>K:AMix</b> means
+	A Mixolydian (two sharps).
+</p><p>
+The <b>X:</b> and <b>T:</b> lines should be the first two lines, and the <b>K:</b> line
+should be the last header line.
+Some software is liberal about these, but some is fairly picky,
+so its best to always use these three main header lines in this order.
+The <b>K:</b> line is followed by music, with a blank line to separate the tune from
+whatever follows.
+</p><hr>
+<center><b>Notes</b></center>
+<p>
+The bottom half of the staff, from C below the staff to B in
+the middle, are represented by the capital letters CDEFGAB.
+The top half of the staff, from the C in the middle to the B
+above, are represented by lower-case letters cdefgab. So the
+notes on the treble staff are EFGABcdef. The lines are EGBdf,
+and the spaces are FAce.
+</p><p>
+You can represent the octaves below and above these by putting a
+comma (<b>,</b>) after the capital letters, or an apostrophe (<b>'</b>) after
+the lower-case letters. This is sort of a pictorial mark: The
+"lower comma" means go down an octave, while the "upper comma"
+means to go up an octave.
+</p><p>
+Here's a summary of notes:
+</p><pre>                                                            ...
+                                                         d'
+                                                   -c'- ----
+                                                b
+                                           -a- --- ---- ----
+                                          g
+    ------------------------------------f-------------------
+                                      e
+    --------------------------------d-----------------------
+                                  c
+    ----------------------------B---------------------------
+                              A
+    ------------------------G-------------------------------
+                          F
+    --------------------E-----------------------------------
+                      D
+    ---- ---- ---- -C-
+               B,
+    ---- -A,-
+     G,
+ ...
+</pre>
+<hr>
+<center><b>Bar lines</b></center>
+<p>
+Here's how you do bar lines:
+<table border="1">
+<tbody><tr><th>|</th><td>simple bar line</td></tr>
+<tr><th>||</th><td>double bar line</td></tr>
+<tr><th>[|</th><td>thick+thin double bar line</td></tr>
+<tr><th>|]</th><td>thin+thick double bar line</td></tr>
+<tr><th>|:</th><td>start of repeat</td></tr>
+<tr><th>:|</th><td>end of repeat</td></tr>
+<tr><th>|1</th><td>start of first ending</td></tr>
+<tr><th>:|2</th><td>start of second ending</td></tr>
+</tbody></table>
+There's also a <b>::</b> symbol that's merely shorthand for <b>:||:</b>, 
+the end of one repeated section and the start of another.
+</p><p>
+It's a good idea to include spaces around bar lines,
+for human readability, but ABC syntax doesn't require this.
+</p><hr>
+<center><b>Timing</b></center>
+<p>
+A note by itself stands for whatever length note is in the L: header line.
+You can add a multiplier after the note. A simple fraction is the basic
+notation. So A3/2 means a note 1.5 times as long as the basic length (a
+dotted eighth note in the above example).
+</p><p>
+You can omit <b>/1</b>, of course, so <b>d4</b> means a
+note four times as long as the basic length (a half note here).
+</p><p>
+You can also omit a numerator of <b>1</b> or a denominator of <b>2</b>.
+So <b>F1/2</b>, <b>F/2</b> and <b>F/</b> all mean the same thing,
+an <b>F</b> note half as long as the <b>L:</b> length in the header.
+</p><p>
+Since all notes are in terms of the <b>L:</b> length, you can quickly change the
+meter of a tune by merely modifying the <b>M:</b> and <b>L:</b> lines in the header.
+</p><p>
+There is a shorthand notation for dotting: The characters <b>&lt;</b> and <b>&gt;</b>
+transfer half the value of the note on one side to the other side. The
+<b>&lt;</b> is a "snap", with a short first note,
+so <b>A&lt;B</b> is shorthand for <b>A1/2B3/2</b>.
+The <b>&gt;</b> is a long-short, so <b>A&gt;B</b> is shorthand for <b>A3/2B1/2</b>.
+You can double these symbols to get a double dot.
+</p><hr>
+<center><b>Beaming</b></center>
+<p>
+Within a measure, spaces are used to separate groups of notes that are
+to be beamed together (if possible).
+So <b>|DFA dAF|</b> is a bar with two groups of three notes (probably a jig),
+while <b>|DF Ad AF|</b> is a bar with three groups of two notes (possibly a waltz).
+</p><hr>
+<center><b>Staffs</b></center>
+<p>
+Normally, ABC uses one staff per line, and end-of-line represents the
+end of a staff. This can lead to very long lines, so the backslash (<b>\</b>) is
+used to mean "continued on next line". This is similar to its use in a lot
+of programming languages, and lets you break up a long line into several short lines.
+The main use for this is in sending tunes via email.
+A lot of email software inserts line feeds in long lines,
+and this has an unfortunate effect on ABC.
+This can be prevented by using <b>\</b> to split a long staff line into two or more shorter lines.
+</p><hr>
+<center><b>"Accompaniment" chords</b></center>
+<p>
+This refers to the names of chords, to be placed above or below the staff
+(there's no standard here). They go in double quotes, just before the note.
+So <b>"G"dBAG</b> would be a G chord above/below the d note. You can actually
+put any text inside the double quotes, so long chord names are possible.
+People also use this for other musical directions, but that isn't really correct.
+</p><hr>
+<center><b>Example</b></center>
+<p>
+One new thing first:  I've used the letter 'z' in this example, which
+represents a rest.  Rests take lengths just like notes, so the two uses of
+z2 represent 1/4-length rests.
+</p><p>
+You have enough knowledge now to understand the following tune:
+</p><pre>X: 1
+T: Balance the Straw
+R: jig
+N: This tune goes with one of the best-known Morris dances. It is also a good jig
+N: for other dances, usually in AABB form. The B phrase bears a strong resemblance
+N: to a certain Christmas carol, and at Morris dances you will hear words like:
+N: __ Hark! the herald angels sing, __
+N: __ Glory to the Morris Ring. __
+N: Sometimes assorted other things are praised by the angels.
+N:
+M: 6/8
+L: 1/8
+K: G
+D \
+|: "G"G2B B&gt;AB | "C"c2A A&gt;ce | "D7"d&gt;ed cAc | "G"G2B B2D \
+|  "G"G2B B&gt;AB | "C"c2A A&gt;ce | "D7"d&gt;ed cEF | "G"G4 z2 :|
+B/c/ \
+|: "G"dz d dz G | "(D7)"c2B "D7"B2A |  "G"dz d dz G | "D7"B2A A2D \
+|  "G"G2B B&gt;AB | "C"c2A A&gt;ce | "D7"d&gt;ed cEF | "G"G4 z2 :|
+</pre>
+<!-- Test of text inclusion via iframe:
+	(There seems to be no way to get the correct height.)
+<iframe src="abc/Balance_the_Straw.abc" style="width:100%"></iframe>
+-->
+<br>Here's what this looks like as standard music notation:<br>
+<br><img src="BalanceTheStraw.png" alt="Balance the Straw" style="border:2px solid black"><br>
+<br>This was produced using the a
+<a href="http://trillian.mit.edu/~jc/doc/src/">abc2ps</a> program,
+plus some tools to convert the result to the PNG graphics format.
+Something else you might notice is that the ABC version contains some N: lines,
+which are "notes" about the tune.  The graphics file doesn't show these notes.
+The <b>abc2ps</b> program, like many ABC tools, has options that control whether
+such information is produced.  This means that you can include as much documentation
+about a tune as you like, and people can print just the tune or print it with
+full documentation.  So don't be afraid to use N: lines liberally.
+<hr>
+<center><b>Repeats and endings</b></center>
+<p>
+Well, I lied a bit just there; I used something new without warning you..
+Did you notice the <b>|:</b> and <b>:|</b> symbols in that tune?
+You probably understood them.
+They mean exactly what you think they mean: Repeat the phrase.
+There's also a shorthand <b>::</b> notation for a bar
+in the middle of a line with repeat symbols on both sides.
+</p><p>
+There is a simple multi-ending notation:
+</p><blockquote>
+	<b>|: ... |1 ... :|2 ... |]</b>
+</blockquote>
+This represents a phrase with two different endings. You can use <b>:|</b> at the
+end to indicate four times through. But this notation is still not well
+developed in ABC. You'd think that you could also say something like
+<blockquote>
+	<b>|::: ... |1,3 ... :|2 ... |4 ... |]</b>
+</blockquote>
+But this isn't recognized by all ABC software yet, and isn't part
+of the official standard. It may be eventually.
+Some ABC software also lets you use the obvious multi-colon notation for repeats:
+<blockquote>
+	<b>|:: ... ::|</b>
+</blockquote>
+This would mean two repeats; i.e., play the phrase three times.
+Again, this isn't yet understood by all ABC software.
+<hr>
+<center><b>Accidentals</b></center>
+The ASCII character set has the <b>#</b> symbol, but lacks the natural and flat symbols.
+So some other, somewhat pictorial, characters were chosen.
+The notation for accidentals is:
+<table border="0">
+<tbody><tr><th>_B</th><td>means B flat</td></tr>
+<tr><th>=A</th><td>means A natural</td></tr>
+<tr><th>^G</th><td>means G sharp</td></tr>
+</tbody></table>
+The usual rule should be followed:
+An accidental applies to that note for the rest of the measure, unless
+changed by another accidental.
+However, it is common to use occasional unnecessary accidentals for emphasis.
+And if you're hanging out with the Early Music crowd, or with modern atonal
+musicians, you should probably treat accidentals as only for that one note.
+<p>
+In accompaniment ("guitar") chords, the characters <b>#</b> and <b>b</b> are used for sharps and flats,
+so <b>"Bb"</b> means a B-flat chord, and <b>"F#m7"</b> means an F-sharp minor 7th chord.
+The same thing is done in key signatures, so <b>K:Bb</b> means the key of B flat,
+and <b>K:F#m</b> means F sharp minor.
+This is inconsistent with accidentals on notes,
+but printed music is often inconsistent in similar ways.
+</p><hr>
+<center><b>Chords</b></center>
+<p>
+You can produces chords, that is, multiple notes on a single stem, by putting
+them within square brackets <b>[...]</b>. So <b>[GBdg]</b> is a 4-note G chord. The order
+doesn't much matter, so <b>[gdBG]</b> comes out the same on paper. But there is
+some music-playing software that will treat the first note as the "melody"
+note, so if this is important, you should put the main note first.
+</p><p>
+ABC notation allows each note in the chord to have its own length.
+You can say things like <b>[D4F3A2d3/2]</b>.
+Music-playing software can honor such things with ease.
+But standard music notation can't represent all of this, and on paper
+you'll get something much simpler. Much music-printing software will
+just use the length of the first note for the entire chord, and the above
+example and <b>[D4FAd]</b> will both come out the same as <b>[D4F4A4d4]</b>.
+</p><hr>
+<center><b>Slurs and ties</b></center>
+Parentheses are used for slurs.
+<b>AB(cd)</b> means to draw a slur from the c to the d.
+Slurs can be drawn between arbitrary notes (though there may be problems
+with slurs that go from one staff to another).
+<p>
+A tie is indicated by a hyphen (<b>-</b>) after the first note.
+So <b>A4- A</b> is two A's tied together.
+</p><p>
+Most music notation doesn't really distinguish slurs and ties, and
+ABC is no exception. You'll see <b>A-B</b>, which should really be <b>(AB)</b>.
+This probably isn't a big deal, except to the rare people who get excited about such things.
+Also, some ABC software will complain if you tie two different notes together.
+But the software should usually do the right thing, and treat it to a slur.
+</p><hr>
+<center><b>Ornaments</b></center>
+<p>
+ABC has a several notations for ornaments.
+If you put notes in curly braces <b>{}</b> they will be treated as grace notes.
+When printed, they will be tiny notes just before the note that follows.
+You can use this to write out rather complex ornaments.
+<b>{gded^c}d</b> will give a d with all five little notes before it.
+</p><p>
+There are also some special symbols that can be put before a note.
+A dot produces the usual staccato: <b>.d</b> means a d with a dot below or above it.
+You can use <b>~</b> to indicate a turn, so <b>~D</b> means a turned D.
+Some software has options to say how to draw such ornaments.
+There are also some ornaments that some programs recognize and others
+don't. Thus <b>T</b> is recognized by some to produce the usual italic <b><i>tr</i></b>
+symbol above the next note. <b>M</b> (for "emphasis") is recognized by some
+to produce a little horizontal line above or below the note.
+Most software recognizes <b>H</b> as a "hold" (fermata).
+And so on.
+</p><p>
+This is an area for future development.
+</p><hr>
+<center><b>Clefs</b></center>
+<p>
+The treble clef is the default.
+But you can specify the clef in the K: header line.
+</p><blockquote>
+<b>K:Gm bass</b>
+</blockquote>
+means the key is G minor, and the clef is bass.
+Unless you say otherwise, <b>K:C treble</b> is assumed.
+(Some software will give a warning if there is no K: line, and
+will then use this default.)
+<p>
+One quandary with ABC was how letters map to staff notes in alto and bass clefs.
+The abc2ps program originally used a mapping like the treble clef:  
+<b>a</b> was the top line, <b>d</b> was the middle line, and <b>G</b> the bottom line..
+But then some other people wrote software that did it differently, with <b>A,</b>
+the top bass line and <b>G,,</b> the bottom line.  After extensive discussion, it
+was decided that there was no "best" way to do this, so another idea was accepted:
+You can state what note goes on the middle line.  So you might write:
+</p><blockquote>
+<b>K:Gm bass middle=d</b>
+</blockquote>
+This puts the letters GABcdefga on the staff, and makes for easy typing.
+If you prefer the other scheme, you can say:
+<blockquote>
+<b>K:Gm bass middle=D,</b>
+</blockquote>
+It's a good idea to always include the <b>middle=</b> item for bass clef,
+so that the software knows where you want the notes on the staff.
+If you don't, some software will draw the notes in different octaves than you intended.
+<p>
+You could also use <b>middle=</b> to change the mapping for the treble clef.
+This could be useful, for exmple, to convert an alto vocal line to an instrumental line
+with the notes drawn an octave higher. Another example is with alto recorder music,
+which historically has been printed in two different octaves.
+In ABC terms, printers treat the instrument's range as <b>F,, ... g</b> or <b>F, ... g'</b>.
+Such music, when transcribed to ABC, can easily be printed in staff notation in either octave
+by merely adding a <b>middle=B</b> or <b>middle=b</b> term to the <b>K:</b> header line.
+
+</p><hr>
+<center><b>More header lines</b></center>
+<p>
+<dd>
+</dd><table border="0">
+<tbody><tr>
+	<th>C: </th><td>Composer (who wrote the tune)</td>
+</tr><tr>
+	<th>O: </th><td>Origin (where it's from)</td>
+</tr><tr>
+	<th>S: </th><td>Source (who you got it from)</td>
+</tr><tr>
+	<th>R: </th><td>Rhythm (reel, jig, polka, tango, ...)</td>
+</tr><tr>
+	<th>B: </th><td>Books where you can find the tune</td>
+</tr><tr>
+	<th>D: </th><td>Discography (recordings of the tune)</td>
+</tr><tr>
+	<th>H: </th><td>History (anything you know about the tune's origins)</td>
+</tr><tr>
+	<th>Q: </th><td>Tempo (1/4=120 means 120 quarter notes per minute)</td>
+</tr><tr>
+	<th>Z: </th><td>Transcription notes (who wrote it down or converted it to ABC, and when)</td>
+</tr>
+</tbody></table>
+</p><hr>
+For more details, here are a couple of documents about ABC notation:
+<dl>
+<dt>
+	<a href="http://abcnotation.org.uk/abc2mtex/abc.txt">abc.txt</a>
+</dt><dd>
+	Chris Walshaw's introduction to abc notation.
+</dd><dt>
+	<a href="http://trillian.mit.edu/~jc/doc/doc/abc-15.txt">abc-15.txt</a>
+</dt><dd>
+	Chris Walshaw's detailed document for ABC notation.
+</dd><dt>
+	<a href="http://trillian.mit.edu/~jc/doc/doc/ReadMe.abc2ps">ReadMe.abc2ps</a>
+</dt><dd>
+	Description of abc2ps (version 1.2)
+</dd><dt>
+	<a href="http://trillian.mit.edu/~jc/doc/doc/abc2mtex_1.5.html">abc2mtex_1.5.html</a>
+</dt><dd>
+	Chris Walshaw's description of abc2mtex.
+</dd><dt>
+	<a href="http://abc.sourceforge.net/abcMIDI/abcguide.txt">abcguide.txt</a>
+</dt><dd>
+	James Allwright description of his programs that translate between ABC and MIDI.
+</dd></dl>
+See also the
+<a href="http://abcnotation.org.uk/">ABC home page</a>
+for a lot more information and pointers to software.
+<hr>
+<center><b>Web warning</b></center>
+<p>
+It turns out to be a bad idea to include ABC notation inside HTML web pages.
+I've done it here, true, but it's really tricky. I don't recommend it.
+The problem is that ABC uses <b>&lt;</b> and <b>&gt;</b>. 
+Inside .html files, most software will interpret these as HTML tags.
+The result is often disastrous.
+It's best to put your tunes in files with <b>.abc</b> on the end of their names,
+and put links to them into your HTML file.
+</p><p>
+If you must include ABC inside HTML, probably the best way is with a <b>&lt;PRE&gt;</b> tag.
+You still need to encode <b>&lt;</b> as <b>&amp;lt;</b> and <b>&gt;</b> as <b>&amp;gt;</b>.
+But this will preserve your whitespace and line ends,
+so it doesn't all get run together as one long line.
+</p><p>
+The <b>HTML5</b> encoding is now accepted by most browsers,
+and if you use it, you can surround ABC with the new <b>&lt;CODE&gt;</b> tag.
+But it still has problems due to incomplete or inconsistent implementation in some browsers.
+</p><p>
+Also, there is an official MIME type for ABC.
+Your webmaster should tell the server that .abc files are to be sent
+as "<b>Content-Type: text/vnd.abc</b>". Then browser helpers and extensions
+will be able to recognize your ABC files as music and treat them appropriately.
+Some web servers, including the common apache server, come configured
+to understand ABC, but older web servers might not.
+</p><p>
+If your webmaster won't accept the idea of sending the official MIME type for .abc files,
+suggest that "text/plain" be used.
+This will allow browsers and other software to display the ABC correctly,
+though it will defeat browser setups for handling ABC music automatically.
+</p><hr>
+Visit the <a href="http://abcnotation.org.uk/">ABC home page</a>
+for a lot more information.
+<hr>
+</li></body></html>

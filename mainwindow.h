@@ -19,7 +19,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    static QString AUTOSAVE;
     static QString TITLE;
     static QString TRANSCRIBER;
     static QString URL;
@@ -38,7 +37,6 @@ public slots:
     void populateFields();
     void clearFields();
 
-    void changeAutosave(int state);
     void changeTitle();
     void changeTranscriber();
     void changeUrl();
@@ -55,6 +53,10 @@ public slots:
 
     void addJSObject();
 
+    void setSheetMusic();
+    void setPrimer();
+    void setOverview();
+
 private:
     Ui::MainWindow *ui;
     QSettings *settings;
@@ -63,8 +65,7 @@ private:
     bool save();
 
     bool ownFilename;
-    bool autosaveOn;
-    QTimer *autosaveTimer;
+    QTimer *updateTimer;
 
     TunePusher *pusher;
 };
