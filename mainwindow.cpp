@@ -11,15 +11,8 @@
 #include <QTimer>
 #include <QSettings>
 #include <QStatusBar>
+#include <QSvgWidget>
 #include <QTextStream>
-#include <QWebFrame>
-#include <QWebPage>
-
-#ifdef DEBUG_WEBKIT
-#include <QDebug>
-#include <QWebInspector>
-#include <QWebSettings>
-#endif
 
 QString MainWindow::TITLE = "title";
 QString MainWindow::TRANSCRIBER = "transcriber";
@@ -38,23 +31,27 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
   , ownFilename(false)
   , updateTimer(0)
+  , musicShown(true)
 {
     pusher = new TunePusher(this);
     ui->setupUi(this);
+
+    connect(pusher, &TunePusher::abcUpdated, this, &MainWindow::resetTheABC);
+
+    QHBoxLayout *svgLayout = new QHBoxLayout();
+    svgLayout->setSpacing(6);
+    ui->scrollAreaWidgetContents->setLayout(svgLayout);
+    svgWidget = new QSvgWidget(ui->scrollAreaWidgetContents);
+    svgLayout->addWidget(svgWidget);
+
     setWindowTitle("ABC TuneEditor");
     settings = new QSettings("monkey&wolf", "TuneEditor", this);
 
-    connect(ui->webView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared, this, &MainWindow::addJSObject);
+
+//    connect(ui->webView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared, this, &MainWindow::addJSObject);
 
     QUrl url("qrc:///index.html");
-    ui->webView->setUrl(url);
-
-#ifdef DEBUG_WEBKIT
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
-    QWebInspector *inspector = new QWebInspector;
-    inspector->setPage(ui->webView->page());
-    inspector->show();
-#endif
+//    ui->webView->setUrl(url);
 
     connect(ui->buttonSave, &QPushButton::clicked, this, &MainWindow::trySave);
     connect(ui->buttonDir, &QPushButton::clicked, this, &MainWindow::openDirectorySelector);
@@ -87,22 +84,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::addJSObject()
 {
-    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("TunePusher"), pusher);
+//    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("TunePusher"), pusher);
 }
 
 void MainWindow::setSheetMusic()
 {
-    ui->webView->setUrl(QUrl("qrc:///index.html"));
+//    ui->webView->setUrl(QUrl("qrc:///index.html"));
 }
 
 void MainWindow::setPrimer()
 {
-    ui->webView->setUrl(QUrl("qrc:///primer.html"));
+//    ui->webView->setUrl(QUrl("qrc:///primer.html"));
 }
 
 void MainWindow::setOverview()
 {
-    ui->webView->setUrl(QUrl("qrc:///intro.html"));
+//    ui->webView->setUrl(QUrl("qrc:///intro.html"));
 }
 
 MainWindow::~MainWindow()
@@ -112,8 +109,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateUI()
 {
-    QString abcString = this->toString();
-    pusher->updateABC(abcString);
+    if (musicShown)
+    {
+        QString abcString = this->toString();
+        pusher->updateABC(abcString);
+    }
+}
+
+void MainWindow::resetTheABC(QString filename)
+{
+    svgWidget->load(filename);
 }
 
 void MainWindow::flickTimer()
@@ -155,7 +160,11 @@ void MainWindow::clearFields()
 
 QString MainWindow::toString()
 {
+#ifdef Q_OS_WIN
+    static QString cr("\r\n");
+#else
     static QChar cr('\n');
+#endif
     QString content;
     content += "X: 1";
     content += cr;

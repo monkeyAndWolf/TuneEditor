@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit
+QT       += core gui svg
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = TuneEditor
 TEMPLATE = app
@@ -27,3 +27,6 @@ RESOURCES += \
 
 DISTFILES += \
     kantele.png
+
+INCLUDEPATH += ../ABCShot
+LIBS += -L../ABCShotsDir/Debug -lABCShots

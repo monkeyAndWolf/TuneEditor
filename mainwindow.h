@@ -8,6 +8,7 @@ class MainWindow;
 }
 
 class QSettings;
+class QSvgWidget;
 class QTimer;
 class TunePusher;
 
@@ -57,6 +58,8 @@ public slots:
     void setPrimer();
     void setOverview();
 
+    void resetTheABC(QString filename);
+
 private:
     Ui::MainWindow *ui;
     QSettings *settings;
@@ -66,8 +69,12 @@ private:
 
     bool ownFilename;
     QTimer *updateTimer;
+    bool musicShown;
 
     TunePusher *pusher;
+
+    QSvgWidget *svgWidget;
+
 };
 
 #endif // MAINWINDOW_H
