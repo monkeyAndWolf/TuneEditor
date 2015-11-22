@@ -22,6 +22,10 @@ TunePusher::TunePusher(QObject *parent) : QObject(parent)
 
 TunePusher::~TunePusher()
 {
+    qDebug() << "Tidy shut down, removing files";
+    QFile f(m_actualSVGName);
+    f.remove();
+    delete (m_inputFile);
     delete (m_outputFile);
 }
 
@@ -39,12 +43,19 @@ void TunePusher::updateABC(QString abc)
         }
         runAbcToSvg(m_inputFileName.toLatin1().data(), m_outputFileName.toLatin1().data());
         int dot = m_inputFileName.indexOf(".");
-        qDebug() << dot;
         dot = m_inputFileName.length() - dot;
-        qDebug() << dot;
         m_inputFileName.chop(dot);
         m_inputFileName += ".svg";
-        qDebug() << m_inputFileName;
+        if (!m_actualSVGName.isNull())
+        {
+            if (m_actualSVGName != m_inputFileName)
+            {
+                // Will this introduce a delay to the UI?
+                QFile f(m_actualSVGName);
+                f.remove();
+            }
+        }
+        m_actualSVGName = m_inputFileName;
         emit abcUpdated(m_inputFileName);
     }
 }

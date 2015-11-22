@@ -25,6 +25,7 @@ private:
     QTemporaryFile *m_outputFile;
     QString m_inputFileName;
     QString m_outputFileName;
+    QString m_actualSVGName;
 };
 
 #endif // TUNEPUSHER_H
