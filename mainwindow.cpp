@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QLineEdit>
+#include <QResizeEvent>
 #include <QTextEdit>
 #include <QTimer>
 #include <QSettings>
@@ -26,32 +27,29 @@ QString MainWindow::DIRECTORY = "directory";
 QString MainWindow::FILENAME = "filename";
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QSettings *s, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
   , ownFilename(false)
   , updateTimer(0)
   , musicShown(true)
+  , settings(s)
 {
     pusher = new TunePusher(this);
     ui->setupUi(this);
 
     connect(pusher, &TunePusher::abcUpdated, this, &MainWindow::resetTheABC);
 
-    QHBoxLayout *svgLayout = new QHBoxLayout();
-    svgLayout->setSpacing(6);
-    ui->scrollAreaWidgetContents->setLayout(svgLayout);
-    svgWidget = new QSvgWidget(ui->scrollAreaWidgetContents);
-    svgLayout->addWidget(svgWidget);
 
     setWindowTitle("ABC TuneEditor");
-    settings = new QSettings("monkey&wolf", "TuneEditor", this);
+//    settings = new QSettings("monkey&wolf", "TuneEditor", this);
 
 
 //    connect(ui->webView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared, this, &MainWindow::addJSObject);
 
-    QUrl url("qrc:///index.html");
+//    QUrl url("qrc:///index.html");
 //    ui->webView->setUrl(url);
+    setUpTabs();
 
     connect(ui->buttonSave, &QPushButton::clicked, this, &MainWindow::trySave);
     connect(ui->buttonDir, &QPushButton::clicked, this, &MainWindow::openDirectorySelector);
@@ -68,9 +66,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->editType, &QLineEdit::textChanged, this, &MainWindow::changeType);
     connect(ui->editUrl, &QLineEdit::textChanged, this, &MainWindow::changeUrl);
 
-    connect(ui->radioOverview, &QRadioButton::clicked, this, &MainWindow::setOverview);
-    connect(ui->radioPrimer, &QRadioButton::clicked, this, &MainWindow::setPrimer);
-    connect(ui->radioSheetMusic, &QRadioButton::clicked, this, &MainWindow::setSheetMusic);
+//    connect(ui->radioOverview, &QRadioButton::clicked, this, &MainWindow::setOverview);
+//    connect(ui->radioPrimer, &QRadioButton::clicked, this, &MainWindow::setPrimer);
+//    connect(ui->radioSheetMusic, &QRadioButton::clicked, this, &MainWindow::setSheetMusic);
 
 
     updateTimer = new QTimer(this);
@@ -105,6 +103,14 @@ void MainWindow::setOverview()
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QRect geom = this->geometry();
+    geom.setWidth(event->size().width());
+    geom.setHeight(event->size().height());
+    settings->setValue("dimensions", geom);
 }
 
 void MainWindow::updateUI()
@@ -142,6 +148,22 @@ void MainWindow::populateFields()
     ui->editTranscriber->setText(settings->value(MainWindow::TRANSCRIBER).toString());
     ui->editType->setText(settings->value(MainWindow::TYPE).toString());
     ui->editUrl->setText(settings->value(MainWindow::URL).toString());
+}
+
+void MainWindow::setUpTabs()
+{
+    ui->tabWidget->setTabText(0, tr("Sheet Music"));
+    QHBoxLayout *svgLayout = new QHBoxLayout();
+    svgLayout->setSpacing(6);
+//    ui->scrollAreaWidgetContents->setLayout(svgLayout);
+//    ui->scrollArea->
+    svgWidget = new QSvgWidget;//(ui->scrollArea);
+    ui->scrollArea->setWidget(svgWidget);
+    svgWidget->setGeometry(0,0,ui->scrollArea->width(), 600);
+//    svgLayout->addWidget(svgWidget);
+
+    ui->tabWidget->setTabText(1, tr("The ABC Primer"));
+    ui->tabWidget->setTabText(2, tr("Instructions and credits"));
 }
 
 void MainWindow::clearFields()
@@ -269,26 +291,25 @@ void MainWindow::changeTitle()
     else
     {
         flickTimer();
-
     }
 }
 
 void MainWindow::changeTranscriber()
 {
     settings->setValue(MainWindow::TRANSCRIBER, ui->editTranscriber->text());
-    flickTimer();
+//    flickTimer();
 }
 
 void MainWindow::changeUrl()
 {
     settings->setValue(MainWindow::URL, ui->editUrl->text());
-    flickTimer();
+//    flickTimer();
 }
 
 void MainWindow::changeType()
 {
     settings->setValue(MainWindow::TYPE, ui->editType->text());
-    flickTimer();
+//    flickTimer();
 }
 
 void MainWindow::changeMeter()
@@ -300,7 +321,7 @@ void MainWindow::changeMeter()
 void MainWindow::changeNoteLength()
 {
     settings->setValue(MainWindow::NOTE_LENGTH, ui->editNoteLength->text());
-    flickTimer();
+//    flickTimer();
 }
 
 void MainWindow::changeKey()

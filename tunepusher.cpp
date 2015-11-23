@@ -8,16 +8,7 @@
 
 TunePusher::TunePusher(QObject *parent) : QObject(parent)
 {
-    m_outputFile = new QTemporaryFile();
-    m_outputFile->open();
-    m_outputFileName = m_outputFile->fileName();
-    qDebug() << "Created a file called" << m_inputFileName;
-    m_outputFile->close();
 
-    m_inputFile = new QTemporaryFile();
-    m_inputFile->open();
-    m_inputFileName = m_inputFile->fileName();
-    m_inputFile->close();
 }
 
 TunePusher::~TunePusher()
@@ -25,8 +16,6 @@ TunePusher::~TunePusher()
     qDebug() << "Tidy shut down, removing files";
     QFile f(m_actualSVGName);
     f.remove();
-    delete (m_inputFile);
-    delete (m_outputFile);
 }
 
 void TunePusher::updateABC(QString abc)
@@ -35,28 +24,35 @@ void TunePusher::updateABC(QString abc)
     {
         m_abc = abc;
 
-        if (m_inputFile->open())
+        QTemporaryFile inputFile;
+        if (inputFile.open())
         {
-            QTextStream str(m_inputFile);
+            QTextStream str(&inputFile);
             str << m_abc;
-            m_inputFile->close();
+            inputFile.close();
         }
-        runAbcToSvg(m_inputFileName.toLatin1().data(), m_outputFileName.toLatin1().data());
-        int dot = m_inputFileName.indexOf(".");
-        dot = m_inputFileName.length() - dot;
-        m_inputFileName.chop(dot);
-        m_inputFileName += ".svg";
+        // The input and output file names are the same. This is because abc2mps
+        // changes the output name to end .svg anyway - so a separate output file
+        // would never ever be used.
+        QString inputFileName = inputFile.fileName();
+        runAbcToSvg(inputFileName.toLatin1().data(), inputFileName.toLatin1().data());
+        int dot = inputFileName.indexOf(".");
+        dot = inputFileName.length() - dot;
+        inputFileName.chop(dot);
+        inputFileName += ".svg";
         if (!m_actualSVGName.isNull())
         {
-            if (m_actualSVGName != m_inputFileName)
+            if (m_actualSVGName != inputFileName)
             {
                 // Will this introduce a delay to the UI?
                 QFile f(m_actualSVGName);
                 f.remove();
+                // Probably not, I don't think that the
+                // file name changes very often.
             }
         }
-        m_actualSVGName = m_inputFileName;
-        emit abcUpdated(m_inputFileName);
+        m_actualSVGName = inputFileName;
+        emit abcUpdated(m_actualSVGName);
     }
 }
 

@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QSettings *s, QWidget *parent = 0);
     ~MainWindow();
 
     static QString TITLE;
@@ -36,6 +36,7 @@ public slots:
     void trySave();
     void openDirectorySelector();
     void populateFields();
+    void setUpTabs();
     void clearFields();
 
     void changeTitle();
@@ -59,6 +60,9 @@ public slots:
     void setOverview();
 
     void resetTheABC(QString filename);
+
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 
 private:
     Ui::MainWindow *ui;

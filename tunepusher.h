@@ -21,10 +21,6 @@ public slots:
 
 private:
     QString m_abc;
-    QTemporaryFile *m_inputFile;
-    QTemporaryFile *m_outputFile;
-    QString m_inputFileName;
-    QString m_outputFileName;
     QString m_actualSVGName;
 };
 
