@@ -1,22 +1,38 @@
 <html>
 <body>
+
+<H3>The TuneEditor Application</H3>
+<p><i>By Monkey&Wolf, of Sunnyvale California</i></p>
+
 <H5>The TuneEditor application is not difficult to use.</H5>
 
 <ol>
-<li>Enter all of your tune-related fields on in the boxes on the left.</li>
-<li>As you edit, the file will be updated in the window on the right.</li>
-<li>Click 'Save' when you are happy with it, and the file will be saved.</li>
-<li>To create a new file, click 'New'. This doesn't create much - basically it strips away most information, leaving only the directory, transcriber name, and the note length.</li>
-<li>Please be respectful of the work of others - do not attribute other's work to yourself. Not cool.</li>
+<li>Enter all of your tune-related fields into the boxes on the left.</li>
+<li>As you edit, the file will be updated in the window at the bottom of the page.</li>
+<li>Click 'Save' when you are happy with it, and the file will be saved into the specified directory. <b>Note!</b>
+This is saving the ABC notation as a text file, and not the sheet music.</li>
+<li>To create a new file, click 'New'. This doesn't create much - basically it strips away most information,
+leaving only the directory, transcriber name, the note length, and the potential to create more music.</li>
+<li>If you are not sure how ABC Notation works, then check the ABC Primer. It's in the middle tab :)</li>
 </ol>
 
 <H5>Credits &c.</H5>
 <p>Produced by an anonymous developer in the Santa Cruz mountains of California.</p>
-<p>The ABC Primer was written by John Chambers. Original version is <a href="http://trillian.mit.edu/~jc/doc/doc/ABCprimer.html">available here.</a> There is plenty more on the internet.</p>
-<p>The transformation from ABC text to Sheet music is achieved using the ABCJS library. See also <a href="http://abcjs.net/">abcjs.net.</a></p>
-
+<p>The ABC Primer was written by John Chambers. Original version is
+<a href="http://trillian.mit.edu/~jc/doc/doc/ABCprimer.html">available here.</a> There is plenty more
+on the internet.</p>
+<p>The transformation from ABC text to Sheet music is achieved using a version of abcm2ps called ABCShot. It
+was originally written by a dude called Jeff Moines.</p>
+<p>The previous version of this application used ABCJS, embedded in a QtWebKit window. This version uses SVG
+rendering - it's not quite as pretty, but there are other advantages which make it worth it. When it comes to
+creating beautiful sheet music in HTML, we recommend using ABCJS, available at
+<a href="http://abcjs.net/">abcjs.net.</a></p>
+<p>If you are in the area, the authors recommend checking out the session in the bakery at Half Moon Bay. It's
+on most Saturday afternoons. Come along and play a tune!</i>
 <br/>
-
+<p>We are open source! Check out our code, it's available at
+<a href="https://github.com/monkeyAndWolf/">github.com/monkeyAndWolf/</a></p>
+<br/>
 <p><i>The music is not in the notes, but in the silence in between.</i> - Wolfgang Amadeus Mozart</p>
 
 </body></html>

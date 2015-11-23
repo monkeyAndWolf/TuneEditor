@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QLineEdit>
+#include <QPalette>
 #include <QResizeEvent>
 #include <QTextEdit>
 #include <QTimer>
@@ -32,8 +33,8 @@ MainWindow::MainWindow(QSettings *s, QWidget *parent) :
     ui(new Ui::MainWindow)
   , ownFilename(false)
   , updateTimer(0)
-  , musicShown(true)
   , settings(s)
+  , musicShown(true)
 {
     pusher = new TunePusher(this);
     ui->setupUi(this);
@@ -155,15 +156,32 @@ void MainWindow::setUpTabs()
     ui->tabWidget->setTabText(0, tr("Sheet Music"));
     QHBoxLayout *svgLayout = new QHBoxLayout();
     svgLayout->setSpacing(6);
-//    ui->scrollAreaWidgetContents->setLayout(svgLayout);
-//    ui->scrollArea->
-    svgWidget = new QSvgWidget;//(ui->scrollArea);
+    svgWidget = new QSvgWidget;
+    ui->scrollArea->setBackgroundRole(QPalette::Light);
     ui->scrollArea->setWidget(svgWidget);
     svgWidget->setGeometry(0,0,ui->scrollArea->width(), 600);
-//    svgLayout->addWidget(svgWidget);
 
     ui->tabWidget->setTabText(1, tr("The ABC Primer"));
+    QFile primer(":/primer.html");
+    // I should check this, but I'm 100% certain it will open.
+    primer.open(QIODevice::ReadOnly);
+    QString primerHTML = primer.readAll();
+    primer.close();
+    ui->textPrimer->setHtml(primerHTML);
+    ui->textPrimer->setReadOnly(true);
+    ui->textPrimer->setOpenExternalLinks(true);
+
     ui->tabWidget->setTabText(2, tr("Instructions and credits"));
+    QFile intro(":/intro.html");
+    intro.open(QIODevice::ReadOnly);
+    QString introHTML = intro.readAll();
+    intro.close();
+    // For some reason, the selected name wasn't being used, perkele!
+    ui->textPerkele->setHtml(introHTML);
+    ui->textPerkele->setReadOnly(true);
+    ui->textPerkele->setOpenExternalLinks(true);
+
+    ui->tabWidget->setCurrentIndex(0);
 }
 
 void MainWindow::clearFields()
