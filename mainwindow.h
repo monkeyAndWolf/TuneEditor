@@ -61,6 +61,8 @@ public slots:
 
     void resetTheABC(QString filename);
 
+    void exportToPdf();
+
 protected:
     virtual void resizeEvent(QResizeEvent *event);
 
@@ -78,6 +80,8 @@ private:
     TunePusher *pusher;
 
     QSvgWidget *svgWidget;
+
+    QString     renderFile;
 
 };
 

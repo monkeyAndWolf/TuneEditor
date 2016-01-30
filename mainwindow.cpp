@@ -7,12 +7,15 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QLineEdit>
+#include <QPainter>
 #include <QPalette>
+#include <QPrinter>
 #include <QResizeEvent>
 #include <QTextEdit>
 #include <QTimer>
 #include <QSettings>
 #include <QStatusBar>
+#include <QSvgRenderer>
 #include <QSvgWidget>
 #include <QTextStream>
 
@@ -55,6 +58,7 @@ MainWindow::MainWindow(QSettings *s, QWidget *parent) :
     connect(ui->buttonSave, &QPushButton::clicked, this, &MainWindow::trySave);
     connect(ui->buttonDir, &QPushButton::clicked, this, &MainWindow::openDirectorySelector);
     connect(ui->buttonNew, &QPushButton::clicked, this, &MainWindow::clearFields);
+    connect(ui->buttonPdf, &QPushButton::clicked, this, &MainWindow::exportToPdf);
 
     connect(ui->editABC, &QTextEdit::textChanged, this, &MainWindow::changeAbc);
     connect(ui->editDirectory, &QLineEdit::textChanged, this, &MainWindow::changeDirectory);
@@ -125,6 +129,7 @@ void MainWindow::updateUI()
 
 void MainWindow::resetTheABC(QString filename)
 {
+    renderFile = filename;
     svgWidget->load(filename);
 }
 
@@ -366,4 +371,24 @@ void MainWindow::changeDirectory()
     flickTimer();
 }
 
+#include <QDebug>
 
+void MainWindow::exportToPdf()
+{
+    // OK, so I need a file name first.
+    QString pdfFileName = QFileDialog::getSaveFileName(this, ("PDF File for \"" + this->ui->editTitle->text() + "\""), QDir::homePath(), "*.pdf");
+
+    if (pdfFileName!="")
+    {
+        if (!pdfFileName.endsWith(".pdf"))
+                    pdfFileName.append(".pdf");
+        QPrinter printer;
+        printer.setPageSize(QPrinter::A4);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(pdfFileName);
+        printer.setFullPage(true);
+        QPainter painterNotPrinter(&printer);
+        QSvgRenderer renderer(renderFile);
+        renderer.render(&painterNotPrinter);
+    }
+}

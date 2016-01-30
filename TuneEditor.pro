@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg
+QT       += core gui svg printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,4 +29,4 @@ DISTFILES += \
     kantele.png
 
 INCLUDEPATH += ../ABCShot
-LIBS += -L../ABCShotsDir/Debug -lABCShots
+LIBS += -L../ShotGlass -lABCShots
