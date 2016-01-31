@@ -388,7 +388,35 @@ void MainWindow::exportToPdf()
         printer.setOutputFileName(pdfFileName);
         printer.setFullPage(true);
         QPainter painterNotPrinter(&printer);
+        int fonty = 50;
+        QRect titleRect(50,fonty,600,30);
+        static QFont titleFont("Times", 18);
+        static QFont secondFont("Times", 12, -1, true);
+        painterNotPrinter.setFont(titleFont);
+        painterNotPrinter.drawText(titleRect, ui->editTitle->text());
+        fonty += 30;
+        if (ui->editTranscriber->text()!="")
+        {
+            QRect transRect(50, fonty, 600, 20);
+            painterNotPrinter.setFont(secondFont);
+            QString transcriber = tr("Transcribed by: ");
+            transcriber += ui->editTranscriber->text();
+            painterNotPrinter.drawText(transRect, transcriber);
+            fonty += 15;
+        }
+        if (ui->editUrl->text()!="")
+        {
+            QRect transRect(50, fonty, 600, 20);
+            painterNotPrinter.setFont(secondFont);
+            QString urler = tr("Url: ");
+            urler += ui->editUrl->text();
+            painterNotPrinter.drawText(transRect, urler);
+        }
         QSvgRenderer renderer(renderFile);
+        // I have no idea where these values come from.
+        // I could look, but I would rather play tunes and not care.
+        QRect viewBox(-30,-50,600,600);
+        renderer.setViewBox(viewBox);
         renderer.render(&painterNotPrinter);
     }
 }
