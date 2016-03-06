@@ -191,8 +191,7 @@ void MainWindow::setUpTabs()
 
 void MainWindow::clearFields()
 {
-    static QString blankAbcString = "X: 1\r\nT: \r\nR: \r\nM: \r\nL: 1/8\r\nK: \r\n";
-    settings->setValue(MainWindow::ABC, blankAbcString);
+    settings->setValue(MainWindow::ABC, "");
     settings->setValue(MainWindow::FILENAME, "");
     settings->setValue(MainWindow::KEY, "");
     settings->setValue(MainWindow::METER, "");
