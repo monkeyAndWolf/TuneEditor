@@ -77,6 +77,13 @@
            </spacer>
           </item>
           <item>
+           <widget class="QPushButton" name="buttonNew">
+            <property name="text">
+             <string>New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="buttonSave">
             <property name="text">
              <string>Save</string>
@@ -84,9 +91,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="buttonNew">
+           <widget class="QPushButton" name="buttonPdf">
             <property name="text">
-             <string>New</string>
+             <string>Export to PDF</string>
             </property>
            </widget>
           </item>
@@ -97,26 +104,6 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonPdf">
-            <property name="text">
-             <string>Export to PDF</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
@@ -236,7 +223,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QTextEdit" name="editABC"/>
+         <widget class="QTextEdit" name="editABC">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -278,7 +272,7 @@
              <x>0</x>
              <y>0</y>
              <width>831</width>
-             <height>355</height>
+             <height>520</height>
             </rect>
            </property>
           </widget>
@@ -365,8 +359,6 @@
   <tabstop>editDirectory</tabstop>
   <tabstop>buttonDir</tabstop>
   <tabstop>editFilename</tabstop>
-  <tabstop>buttonSave</tabstop>
-  <tabstop>buttonNew</tabstop>
   <tabstop>editTitle</tabstop>
   <tabstop>editTranscriber</tabstop>
   <tabstop>editUrl</tabstop>
