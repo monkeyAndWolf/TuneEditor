@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = TuneEditor
 TEMPLATE = app
 
+mac {
+    ICON = kantele.icns
+}
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
