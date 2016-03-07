@@ -34,9 +34,9 @@ QString MainWindow::FILENAME = "filename";
 MainWindow::MainWindow(QSettings *s, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
+  , settings(s)
   , ownFilename(false)
   , updateTimer(0)
-  , settings(s)
   , musicShown(true)
 {
     pusher = new TunePusher(this);
