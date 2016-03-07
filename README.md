@@ -1,16 +1,47 @@
-Version 1 of the TuneEditor, a simple ABC notation editor and viewer.
+Version 1.1 of the TuneEditor, a simple ABC notation editor, viewer, and printer.
 
-Written using Qt 5.5.1, and uses QtWebKit. Will not build with Qt 5.6. RIP QtWebKit, it's been a blast.
+Written using Qt 5.5.1.
 
 Build instructions:
 
-Track 1: Open in QtCreator, and click 'build'.
+Step 1: Make sure that you have Qt 5 installed somewhere. This is developed with Qt 5.5.1.
+   - You can get Qt from downloads.qt.io/qt.
+Step 2: Get the ABCShots library.
 
-Track 2: Run qmake, then make. make install if you dare.
+Clone the ABCShots library and the TuneEditor library into the same directory, ie
 
-Tested so far only on Linux Mint, although I see no reason why it would not work on any other platform - there is nothing Linux specific in the code.
+<somedir>
+    |-ABCShots
+    |-TuneEditor
 
-The actual parsing of the ABC is handled by the abcjs JavaScript library, running inside QtWebKit. It's kind of overkill to use QtWebKit just for this, but it works well, and we were not able to find any libraries as good as abcjs. We are working on a port of abcjs to the QtQuick runtime, but no promises. ABCJS lives at http://abcjs.net/.
+Step 3: Build ABCShots with qmake
+
+i. mkdir abcShotsBuildDir
+ii. cd abcShotsBuildDir
+iii. /path/to/qmake ../ABCShots/ABCShots.pro
+iv. make
+v. make install
+
+ABCShots installs itself into a directory called "ShotGlass" - it's expected by the TuneEditor. You can change this in the .pro files if you don't like it.
+
+vi. cd .. 
+vii. mkdir tuneEditorBuildDir
+viii. cd tuneEditorBuildDir
+ix. /path/to/qmake ../TuneEditor/TuneEditor.pro
+x. make
+
+Tada!! You have a finished TuneEditor application. At least, that's the Unix way of doing it.
+
+Compilation on Windows: I have no idea. The Windows version is cross compiled on a Linux machine using MXE, and the Mac version is, well, Mac is Unix, so it works the same.
+
+
+
+Tested and working OK on Linux Mint, Macintosh, and Windows machines [cross compiled with MXE from Linux. MXE is awesome].
+
+
+
+The parsing is handled by ABCShot, which pumps out an SVG file to the tmp directory. This is then loaded again and displayed in an SVG window. Same kind of thing for the PDF export feature. It would be neat if ABCShots could send an SVG stream back instead, well, maybe one day. More likely I move it to QtWebKit, the pending cross-platform webview that uses a native WebView, and then use HTML on all platforms because abcjs [abcjs.net] is lovely.
+
 
 
 Using the application:
@@ -19,9 +50,7 @@ Using the application:
 
 -The filename will be generated from the name of the tune, unless you enter a different one.
 
--Seelcting 'Autosave' will save the file each time the contents are changed, except if it's the filename, because then you would have a LOT of files being created, and that would be annoying.
-
--Enter the tune details in the boxes to the left, and the ABC in the big box in the middle. You should see the even larger panel on the right update with the parsed sheet music on the right - wow!!
+-Enter the tune details in the boxes to the left, and the ABC in the box on the right. Don't enter all the ABC here, just the actual music notes. You should see the large panel at the bottom update with the tune - wow!!
 
 -Data entered into the fields is stored when you close and reopen the application. It's so that you don't need to enter everything each time.
 
@@ -31,7 +60,6 @@ Using the application:
 
 
 TODO
--It's currently not possible to print the sheetmusic, and is not required by the project we're working on. But it's not a huge job so may come one day.
 -It would be neat if you could enter the type in the type field - say it's a reel or a jig, for example - and then see the meter added automatically. Yup, that would be fun, and not so very hard to do, if there weren't so many different types of tune in the world.
 
 
