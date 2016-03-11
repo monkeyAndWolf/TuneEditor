@@ -3,6 +3,8 @@
 
 #include "tunepusher.h"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
@@ -38,27 +40,21 @@ MainWindow::MainWindow(QSettings *s, QWidget *parent) :
   , ownFilename(false)
   , updateTimer(0)
   , musicShown(true)
+  , textShown(false)
 {
     pusher = new TunePusher(this);
     ui->setupUi(this);
 
     connect(pusher, &TunePusher::abcUpdated, this, &MainWindow::resetTheABC);
 
-
     setWindowTitle("ABC TuneEditor");
-//    settings = new QSettings("monkey&wolf", "TuneEditor", this);
-
-
-//    connect(ui->webView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared, this, &MainWindow::addJSObject);
-
-//    QUrl url("qrc:///index.html");
-//    ui->webView->setUrl(url);
     setUpTabs();
 
     connect(ui->buttonSave, &QPushButton::clicked, this, &MainWindow::trySave);
     connect(ui->buttonDir, &QPushButton::clicked, this, &MainWindow::openDirectorySelector);
     connect(ui->buttonNew, &QPushButton::clicked, this, &MainWindow::clearFields);
     connect(ui->buttonPdf, &QPushButton::clicked, this, &MainWindow::exportToPdf);
+//    connect(ui->buttonCopyText, &QPushButton::clicked, this, &MainWindow::copyToClipboard);
 
     connect(ui->editABC, &QTextEdit::textChanged, this, &MainWindow::changeAbc);
     connect(ui->editDirectory, &QLineEdit::textChanged, this, &MainWindow::changeDirectory);
@@ -125,12 +121,19 @@ void MainWindow::updateUI()
         QString abcString = this->toString();
         pusher->updateABC(abcString);
     }
+    else if (textShown)
+    {
+        QString abcString = toString();
+        ui->textEditDisplayText->setText(abcString);
+        copyToClipboard();
+    }
 }
 
 void MainWindow::resetTheABC(QString filename)
 {
     renderFile = filename;
     svgWidget->load(filename);
+    settings->setValue(MainWindow::ABC, ui->editABC->toPlainText());
 }
 
 void MainWindow::flickTimer()
@@ -166,7 +169,11 @@ void MainWindow::setUpTabs()
     ui->scrollArea->setWidget(svgWidget);
     svgWidget->setGeometry(0,0,ui->scrollArea->width(), 600);
 
-    ui->tabWidget->setTabText(1, tr("The ABC Primer"));
+    ui->tabWidget->setTabText(1, "Text");
+    ui->textEditDisplayText->setReadOnly(true);
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, &MainWindow::tabChanged);
+
+    ui->tabWidget->setTabText(2, tr("The ABC Primer"));
     QFile primer(":/primer.html");
     // I should check this, but I'm 100% certain it will open.
     primer.open(QIODevice::ReadOnly);
@@ -176,7 +183,7 @@ void MainWindow::setUpTabs()
     ui->textPrimer->setReadOnly(true);
     ui->textPrimer->setOpenExternalLinks(true);
 
-    ui->tabWidget->setTabText(2, tr("Instructions and credits"));
+    ui->tabWidget->setTabText(3, tr("Instructions and credits"));
     QFile intro(":/intro.html");
     intro.open(QIODevice::ReadOnly);
     QString introHTML = intro.readAll();
@@ -187,6 +194,27 @@ void MainWindow::setUpTabs()
     ui->textPerkele->setOpenExternalLinks(true);
 
     ui->tabWidget->setCurrentIndex(0);
+}
+
+void MainWindow::tabChanged(int which)
+{
+    musicShown = textShown = false;
+    if (0 == which)
+    {
+        musicShown = true;
+    }
+    if (1 == which)
+    {
+        textShown = true;
+        copyToClipboard();
+    }
+}
+
+void MainWindow::copyToClipboard()
+{
+    QString contents = toString();
+    ui->textEditDisplayText->setText(contents);
+    QApplication::clipboard()->setText(contents);
 }
 
 void MainWindow::clearFields()
@@ -355,7 +383,7 @@ void MainWindow::changeKey()
 
 void MainWindow::changeAbc()
 {
-    settings->setValue(MainWindow::ABC, ui->editABC->toPlainText());
+    // ABC only gets changed when the ABC renderer responds.
     flickTimer();
 }
 
@@ -370,8 +398,6 @@ void MainWindow::changeDirectory()
     settings->setValue(MainWindow::DIRECTORY, ui->editDirectory->text());
     flickTimer();
 }
-
-#include <QDebug>
 
 void MainWindow::exportToPdf()
 {

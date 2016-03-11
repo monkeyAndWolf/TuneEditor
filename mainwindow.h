@@ -76,6 +76,7 @@ private:
     bool ownFilename;
     QTimer *updateTimer;
     bool musicShown;
+    bool textShown;
 
     TunePusher *pusher;
 
@@ -83,6 +84,9 @@ private:
 
     QString     renderFile;
 
+private slots:
+    void tabChanged(int which);
+    void copyToClipboard();
 };
 
 #endif // MAINWINDOW_H
