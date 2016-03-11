@@ -202,6 +202,7 @@ void MainWindow::tabChanged(int which)
     if (0 == which)
     {
         musicShown = true;
+        updateUI();
     }
     if (1 == which)
     {
@@ -215,6 +216,7 @@ void MainWindow::copyToClipboard()
     QString contents = toString();
     ui->textEditDisplayText->setText(contents);
     QApplication::clipboard()->setText(contents);
+    ui->statusBar->showMessage("Copied to clipboard");
 }
 
 void MainWindow::clearFields()
