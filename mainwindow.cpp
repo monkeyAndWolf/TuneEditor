@@ -103,6 +103,7 @@ void MainWindow::setOverview()
 
 MainWindow::~MainWindow()
 {
+    settings->setValue(MainWindow::ABC, ui->editABC->toPlainText());
     delete ui;
 }
 
@@ -131,9 +132,9 @@ void MainWindow::updateUI()
 
 void MainWindow::resetTheABC(QString filename)
 {
+    QString str = ui->editABC->toPlainText();
     renderFile = filename;
     svgWidget->load(filename);
-    settings->setValue(MainWindow::ABC, ui->editABC->toPlainText());
 }
 
 void MainWindow::flickTimer()
